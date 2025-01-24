@@ -75,23 +75,13 @@ def filedownload(df):
 
 
 
+import streamlit as st
 import os
 
 st.markdown("""
 <style>
-.stFileUploader {
-   display: none !important;
-}
-
 header, footer {
    display: none !important;
-}
-
-body {
-   --background-color: #ffffff;
-   --text-color: #000000;
-   background-color: #ffffff;
-   color: #000000;
 }
 
 .css-1aumxhk {
@@ -101,6 +91,13 @@ body {
 .reportview-main .block-container {
    padding: 0;
 }
+
+body {
+   --background-color: #ffffff;
+   --text-color: #000000;
+   background-color: #ffffff;
+   color: #000000;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -108,7 +105,6 @@ uploaded_file = st.file_uploader("Upload File", key=f"custom_uploader_{os.urando
 
 if uploaded_file:
    st.write("File uploaded successfully")
-
 
 
 
