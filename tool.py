@@ -80,8 +80,6 @@ import os
 
 st.markdown("""
 <style>
-
-
 .css-1aumxhk {
    display: none !important;
 }
@@ -96,14 +94,20 @@ body {
    background-color: #ffffff;
    color: #000000;
 }
+
+/* Remove "Hosted with Streamlit" footer */
+footer {
+   display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
+
+st.header("Your Application Header")
 
 uploaded_file = st.file_uploader("Upload File", key=f"custom_uploader_{os.urandom(16).hex()}")
 
 if uploaded_file:
    st.write("File uploaded successfully")
-
 
 
 
