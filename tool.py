@@ -74,6 +74,7 @@ def filedownload(df):
 
 
 
+
 import os
 
 st.markdown("""
@@ -87,22 +88,10 @@ header, footer {
 }
 
 body {
-   background-color: var(--background-color);
-   color: var(--text-color);
-}
-
-@media (prefers-color-scheme: dark) {
-   body {
-       --background-color: #121212;
-       --text-color: #ffffff;
-   }
-}
-
-@media (prefers-color-scheme: light) {
-   body {
-       --background-color: #ffffff;
-       --text-color: #000000;
-   }
+   --background-color: #ffffff;
+   --text-color: #000000;
+   background-color: #ffffff;
+   color: #000000;
 }
 
 .css-1aumxhk {
@@ -119,7 +108,6 @@ uploaded_file = st.file_uploader("Upload File", key=f"custom_uploader_{os.urando
 
 if uploaded_file:
    st.write("File uploaded successfully")
-
 
 
 
