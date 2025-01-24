@@ -80,9 +80,7 @@ import os
 
 st.markdown("""
 <style>
-header, footer {
-   display: none !important;
-}
+
 
 .css-1aumxhk {
    display: none !important;
