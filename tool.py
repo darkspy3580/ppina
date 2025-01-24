@@ -16,7 +16,8 @@ import Bio
 
 import sys
 from Bio import Entrez
-
+# SETTING THE LAYOUT AND GIVE PAGE TITLE AND ICON FOR THE APP
+st.set_page_config(page_title='PPINA : Protein-Protein Interaction Network Analysis', page_icon='a.jpg',layout="wide")
 
 def get_tax_id(species):
     """to get data from ncbi taxomomy, we need to have the taxid. we can
@@ -73,6 +74,51 @@ def filedownload(df):
 
 
 
+import os
+
+st.markdown("""
+<style>
+.stFileUploader {
+   display: none !important;
+}
+
+header, footer {
+   display: none !important;
+}
+
+body {
+   background-color: var(--background-color);
+   color: var(--text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+   body {
+       --background-color: #121212;
+       --text-color: #ffffff;
+   }
+}
+
+@media (prefers-color-scheme: light) {
+   body {
+       --background-color: #ffffff;
+       --text-color: #000000;
+   }
+}
+
+.css-1aumxhk {
+   display: none !important;
+}
+
+.reportview-main .block-container {
+   padding: 0;
+}
+</style>
+""", unsafe_allow_html=True)
+
+uploaded_file = st.file_uploader("Upload File", key=f"custom_uploader_{os.urandom(16).hex()}")
+
+if uploaded_file:
+   st.write("File uploaded successfully")
 
 
 
@@ -95,8 +141,7 @@ def filedownload(df):
 #86AF2D
 
 
-# SETTING THE LAYOUT AND GIVE PAGE TITLE AND ICON FOR THE APP
-st.set_page_config(page_title='PPINA : Protein-Protein Interaction Network Analysis', page_icon='a.jpg',layout="wide")
+
 
 
 
