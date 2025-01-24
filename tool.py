@@ -81,23 +81,22 @@ import os
 st.markdown("""
 <style>
 .css-1aumxhk {
-   display: none !important;
+    display: none !important;
 }
 
 .reportview-main .block-container {
-   padding: 0;
+    padding: 0;
 }
 
 body {
-   --background-color: #ffffff;
-   --text-color: #000000;
-   background-color: #ffffff;
-   color: #000000;
+    --background-color: #ffffff;
+    --text-color: #000000;
+    background-color: #ffffff;
+    color: #000000;
 }
 
-/* Remove "Hosted with Streamlit" footer */
 footer {
-   display: none !important;
+    display: none !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -107,7 +106,7 @@ st.header("Your Application Header")
 uploaded_file = st.file_uploader("Upload File", key=f"custom_uploader_{os.urandom(16).hex()}")
 
 if uploaded_file:
-   st.write("File uploaded successfully")
+    st.write("File uploaded successfully")
 
 
 
