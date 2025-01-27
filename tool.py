@@ -194,9 +194,7 @@ if selected1=="Contact Us":
               st.title('Developers')
               st.write('Jisha R C - jisha@gmail.com')   
               st.write('Achu Pushpan - achu@gmail.com')
-              st.write('Ashish Arvind Suryawanshi- ashish@gmail.com')
-              st.write('Harinandanan N - hari@gmail.com')
-              st.write('Midhun Manu - midhun@gmail.com')  
+              
 
     if selected3=='Location':
               st.title('Location')
