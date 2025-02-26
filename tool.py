@@ -167,7 +167,137 @@ if selected1=="PPI Network Construction":
 )
         
 
-
+if selected1 == "Sample Dataset":
+    # Apply custom CSS styles for the entire section
+    st.markdown("""
+        <style>
+            /* Card-like styling for dataframes */
+            .dataset-card {
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin-bottom: 30px;
+                background-color: white;
+            }
+            
+            /* Custom styling for headers */
+            .dataset-header {
+                color: #2C3E50;
+                font-family: 'Segoe UI', Arial, sans-serif;
+                font-weight: 600;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid #3498DB;
+            }
+            
+            /* Styling for dataframes */
+            .stDataFrame {
+                border: none !important;
+            }
+            
+            /* Download button styling */
+            .stDownloadButton button {
+                background-color: #3498DB !important;
+                color: white !important;
+                border-radius: 5px !important;
+                border: none !important;
+                padding: 8px 16px !important;
+                font-weight: 500 !important;
+                transition: all 0.3s !important;
+            }
+            
+            .stDownloadButton button:hover {
+                background-color: #2980B9 !important;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+            }
+            
+            /* Info text styling */
+            .info-text {
+                font-size: 14px;
+                color: #7F8C8D;
+                margin-bottom: 15px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    # Page header
+    st.markdown("<h1 style='text-align: center; color: #3498DB; margin-bottom: 30px;'>Coronavirus Sequence Datasets</h1>", unsafe_allow_html=True)
+    
+    # Brief description
+    st.markdown("<p class='info-text'>The following datasets contain spike protein sequences from different coronavirus strains affecting humans. These datasets are crucial for comparative genomic analysis and studying viral evolution.</p>", unsafe_allow_html=True)
+    
+    # SARS-CoV Dataset
+    st.markdown("<div class='dataset-card'>", unsafe_allow_html=True)
+    st.markdown("<h2 class='dataset-header'>SARS-CoV Spike Protein Sequences</h2>", unsafe_allow_html=True)
+    st.markdown("<p class='info-text'>Severe Acute Respiratory Syndrome Coronavirus, first identified in 2003.</p>", unsafe_allow_html=True)
+    
+    df1 = pd.read_csv("S-human SARS-CoV.csv")
+    st.dataframe(df1.style.set_properties(**{
+        'background-color': '#f8f9fa', 
+        'color': '#2C3E50',
+        'border': '1px solid #eaeaea',
+        'font-family': 'Segoe UI, Arial, sans-serif'
+    }).highlight_max(axis=0, color='#E1F5FE'))
+    
+    csv1 = df1.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download SARS-CoV Dataset", 
+        data=csv1, 
+        file_name="S-human_SARS-CoV.csv", 
+        mime='text/csv', 
+        help="Click to download the SARS-CoV sequence dataset.")
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # MERS-CoV Dataset
+    st.markdown("<div class='dataset-card'>", unsafe_allow_html=True)
+    st.markdown("<h2 class='dataset-header'>MERS-CoV Spike Protein Sequences</h2>", unsafe_allow_html=True)
+    st.markdown("<p class='info-text'>Middle East Respiratory Syndrome Coronavirus, first identified in 2012.</p>", unsafe_allow_html=True)
+    
+    df2 = pd.read_csv("S-human MERS-CoV.csv")
+    st.dataframe(df2.style.set_properties(**{
+        'background-color': '#f8f9fa', 
+        'color': '#2C3E50',
+        'border': '1px solid #eaeaea',
+        'font-family': 'Segoe UI, Arial, sans-serif'
+    }).highlight_max(axis=0, color='#E1F5FE'))
+    
+    csv2 = df2.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download MERS-CoV Dataset", 
+        data=csv2, 
+        file_name="MERS-CoV.csv", 
+        mime='text/csv', 
+        help="Click to download the MERS-CoV sequence dataset.")
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # SARS-CoV-2 Dataset
+    st.markdown("<div class='dataset-card'>", unsafe_allow_html=True)
+    st.markdown("<h2 class='dataset-header'>SARS-CoV-2 Spike Protein Sequences</h2>", unsafe_allow_html=True)
+    st.markdown("<p class='info-text'>Novel Coronavirus responsible for COVID-19, first identified in 2019.</p>", unsafe_allow_html=True)
+    
+    df3 = pd.read_csv("S-human SARS-CoV-2.csv")
+    st.dataframe(df3.style.set_properties(**{
+        'background-color': '#f8f9fa', 
+        'color': '#2C3E50',
+        'border': '1px solid #eaeaea',
+        'font-family': 'Segoe UI, Arial, sans-serif'
+    }).highlight_max(axis=0, color='#E1F5FE'))
+    
+    csv3 = df3.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download SARS-CoV-2 Dataset", 
+        data=csv3, 
+        file_name="SARS-CoV-2.csv", 
+        mime='text/csv', 
+        help="Click to download the SARS-CoV-2 sequence dataset.")
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Footer
+    st.markdown("""
+    <div style='text-align: center; margin-top: 30px; color: #7F8C8D; font-size: 12px;'>
+        These datasets are provided for research and educational purposes.
+    </div>
+    """, unsafe_allow_html=True)
 
 
 
