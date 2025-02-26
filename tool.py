@@ -135,8 +135,8 @@ if uploaded_file:
 
 # CREATING THE SIDEBAR
 with st.sidebar:
-   selected1 = option_menu("Home", ["Introduction", 'Tutorial','PPI Network Construction','NCBI Organism ID Finder','Contact Us'], 
-    icons=['lightbulb', 'book','bezier','123','telephone'], 
+   selected1 = option_menu("Home", ["Introduction", 'Tutorial','PPI Network Construction','NCBI Organism ID Finder','Sample Dataset','Contact Us'], 
+    icons=['lightbulb', 'book','bezier','123','book','telephone'], 
     menu_icon="house-door", default_index=0, 
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa"},
@@ -144,7 +144,7 @@ with st.sidebar:
         "nav-link": {"font-size": "17px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
         "nav-link-selected": {"background-color": "black"},
     }
-)
+))
 
 
 
