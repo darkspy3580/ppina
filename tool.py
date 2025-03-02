@@ -265,6 +265,28 @@ if selected1 == "Sample Dataset":
         help="Click to download the SARS-CoV-2 sequence dataset.")
     st.markdown("</div>", unsafe_allow_html=True)
     
+    # Vaccine & Drug Target Dataset
+    st.markdown("<div class='dataset-card'>", unsafe_allow_html=True)
+    st.markdown("<h2 class='dataset-header'>Vaccine & Drug Target Dataset</h2>", unsafe_allow_html=True)
+    st.markdown("<p class='info-text'>Potential vaccine and drug targets for coronavirus treatments, including protein binding sites and epitopes.</p>", unsafe_allow_html=True)
+    
+    df4 = pd.read_csv("VACCINE & DRUG TARGET DATASET.csv")
+    st.dataframe(df4.style.set_properties(**{
+        'background-color': '#f8f9fa', 
+        'color': '#2C3E50',
+        'border': '1px solid #eaeaea',
+        'font-family': 'Segoe UI, Arial, sans-serif'
+    }).highlight_max(axis=0, color='#E1F5FE'))
+    
+    csv4 = df4.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download Vaccine & Drug Target Dataset", 
+        data=csv4, 
+        file_name="VACCINE_DRUG_TARGET_DATASET.csv", 
+        mime='text/csv', 
+        help="Click to download the vaccine and drug target dataset.")
+    st.markdown("</div>", unsafe_allow_html=True)
+    
     # Footer
     st.markdown("""
     <div style='text-align: center; margin-top: 30px; color: #7F8C8D; font-size: 12px;'>
