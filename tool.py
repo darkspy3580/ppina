@@ -1,4 +1,3 @@
-# IMPORTING LIBRARIES
 import streamlit as st
 from streamlit_option_menu import option_menu
 import requests
@@ -10,11 +9,8 @@ import streamlit.components.v1 as components
 import time
 import matplotlib.pyplot as plt
 from networkx.algorithms.community.centrality import girvan_newman
-
-import Bio
-
-
-import sys
+import base64  # Added for filedownload function
+import os
 from Bio import Entrez
 # SETTING THE LAYOUT AND GIVE PAGE TITLE AND ICON FOR THE APP
 st.set_page_config(page_title='PPINA : Protein-Protein Interaction Network Analysis', page_icon='a.jpg',layout="wide")
@@ -2725,4 +2721,5 @@ interactions = df[['preferredName_A', 'preferredName_B', 'score']]'''
 
     
     
+
 
