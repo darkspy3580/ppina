@@ -12,6 +12,7 @@ from networkx.algorithms.community.centrality import girvan_newman
 import base64  # Added for filedownload function
 import os
 from Bio import Entrez
+
 # SETTING THE LAYOUT AND GIVE PAGE TITLE AND ICON FOR THE APP
 st.set_page_config(page_title='PPINA : Protein-Protein Interaction Network Analysis', page_icon='a.jpg',layout="wide")
 
@@ -29,34 +30,9 @@ def get_tax_data(taxid):
     search = Entrez.efetch(id = taxid, db = "taxonomy", retmode = "xml")
     return Entrez.read(search)
 
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
 @st.cache_data
 def convert_df(data1):
      return data1.to_csv().encode('utf-8')
-
-
-
-
-
-
-
-
-
 
 # DOWNLOAD AS CSV FILE
 def filedownload(df):
@@ -64,43 +40,6 @@ def filedownload(df):
     b64=base64.b64encode(csv.encode()).decode()
     href = f'<a href="data:file/csv;base64,{b64}" download="ppi_data.csv">Download csv file</a>' 
     return href
-
-
-
-
-
-
-
-
-import os
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# BACKGROUND COLOR - 
-#86AF2D
-
-
-
-
-
-
-
-
 
 # CREATING THE SIDEBAR
 with st.sidebar:
@@ -115,11 +54,7 @@ with st.sidebar:
     }
 )
 
-
-
-
 selected2='a'
-
 
 # PPI NETWORK CONSTRUCTION
 if selected1=="PPI Network Construction":
@@ -290,13 +225,6 @@ if selected1 == "Sample Dataset":
     </div>
     """, unsafe_allow_html=True)
 
-
-
-
-
-
-
-
 # CONTACT US
 if selected1=="Contact Us":
     with st.sidebar:
@@ -323,12 +251,6 @@ if selected1=="Contact Us":
               st.write('Amrita School of Engineering')
               st.write('Amritapuri')
               st.write('Kollam')  
-
-
-
-
-
-
 
 # INTRODUCTION
 if selected1=="Introduction":
@@ -357,21 +279,7 @@ if selected1=="Introduction":
 
     st.image('ae.png')
 
-
-
-
-
-
-
-
-
-
-
-
-
 selected4='b'
-
-
 
 # QUERY A SINGLE PROTEIN
 if selected2=='Query a Single Protein':
@@ -398,9 +306,6 @@ if selected2=='Query a Single Protein':
         "nav-link-selected": {"background-color": "black"},
     }
 )
-
-
-
 
     # GET PPI DATA
     if selected4=="Get PPI Data":
@@ -434,13 +339,6 @@ if selected2=='Query a Single Protein':
                st.write(p1)
                st.image('d.png')
 
-
-
-
-
-
-
-
     # VISUALIZE NETWORK
     if selected4=='Visualize Network':
         try:
@@ -527,15 +425,6 @@ if selected2=='Query a Single Protein':
         except:
            st.image('d.png')
                          
-        
-  
-
-
-
-
-
-
-
     # STATISTICAL ANALYSIS
     if selected4=='Statistical Analysis':
         try:
@@ -554,11 +443,23 @@ if selected2=='Query a Single Protein':
                G = nx.from_pandas_edgelist(data1, 'Source', 'Target')
                col1,col2=st.columns(2)
 
-
-
                with col1:
-                   selected7 = option_menu("STATISTICAL PARAMETERS", ['Number of Nodes','Number of Edges','Average Degree','Average Path Length',"Network Diameter","Network Radius","Average Clustering Coefficient",'Clustering Coefficient of each node',"Connected or Disconnected","Number of Connected Components","Center","View Full Statistics"], 
-    icons=['123','123','123','123','123','123','123','123','123','123','123','123'], 
+                   selected7 = option_menu("STATISTICAL PARAMETERS", [
+                       'Number of Nodes',
+                       'Number of Edges', 
+                       'Network Density',
+                       'Average Degree',
+                       'Average Path Length',
+                       "Network Diameter",
+                       "Network Radius",
+                       "Average Clustering Coefficient",
+                       'Clustering Coefficient of each node',
+                       "Connected or Disconnected",
+                       "Number of Connected Components",
+                       "Center",
+                       "View Full Statistics"
+                   ], 
+    icons=['123','123','123','123','123','123','123','123','123','123','123','123','123'], 
     menu_icon="graph-up", default_index=0, 
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa",'border': '7px solid powderblue'},
@@ -567,9 +468,6 @@ if selected2=='Query a Single Protein':
         "nav-link-selected": {"background-color": "green"},
     }
 )
-
-
-
 
                with col2:
                    if selected7=="Number of Nodes":
@@ -580,27 +478,30 @@ if selected2=='Query a Single Protein':
                          c2=nx.number_of_edges(G)
                          str= 'Number of Edges : '+str(c2)
                          st.header(str)
+                   if selected7=="Network Density":
+                        try:
+                            c_density = nx.density(G)
+                            str= 'Network Density : '+str(round(c_density, 4))
+                            st.header(str)
+                            st.caption("Network density measures how connected the network is. It ranges from 0 (no connections) to 1 (fully connected).")
+                        except:
+                            st.header('Network Density cannot be calculated')
                    if selected7=="Average Degree":
                          try: 
                             G_deg=nx.degree_histogram(G)
                             G_deg_sum=[a*b for a,b in zip(G_deg,range(0,len(G_deg)))]
                             avg_deg=sum(G_deg_sum)/nx.number_of_nodes(G)
-                            str='Average Degree : '+str(avg_deg)
+                            str='Average Degree : '+str(round(avg_deg, 4))
                             st.header(str)
-
-
-
                          except:
                              st.header('Average Degree cannot be found')
-
                    if selected7=="Average Path Length":
                          try:
                              c3=nx.average_shortest_path_length(G)
-                             str='Average Path Length : '+str(c3) 
+                             str='Average Path Length : '+str(round(c3, 4)) 
                              st.header(str)
                          except:
                               st.header('Average Path Length cannot be found')
-
                    if selected7=="Network Diameter":
                            try:
                               c4=nx.diameter(G)
@@ -619,7 +520,7 @@ if selected2=='Query a Single Protein':
                            try:
                               G_cluster = sorted(list(nx.clustering(G).values()))
                               avg_clu=sum(G_cluster)/len(G_cluster)
-                              str='Average Clustering Coefficient : '+str(avg_clu) 
+                              str='Average Clustering Coefficient : '+str(round(avg_clu, 4)) 
                               st.header(str)
                            except:
                               st.header('Average Clustering Coefficient cannot be found')
@@ -637,7 +538,7 @@ if selected2=='Query a Single Protein':
                    if selected7=="Connected or Disconnected":
                            try:
                               c7=nx.is_connected(G)
-                              if c7=='True':
+                              if c7:
                                   s='Connected'
                               else:
                                   s='Disconnected'
@@ -659,10 +560,9 @@ if selected2=='Query a Single Protein':
                               st.header(str)
                            except:
                               st.header('Center cannot be found')
-
                    if selected7=="View Full Statistics":
                            try:
-                              list1=['Number of Nodes','Number of Edges','Average Degree','Average Path Length',"Network Diameter","Network Radius","Average Clustering Coefficient","Number of Connected Components"]
+                              list1=['Number of Nodes','Number of Edges','Network Density','Average Degree','Average Path Length',"Network Diameter","Network Radius","Average Clustering Coefficient","Number of Connected Components"]
                               try:
                                 c1=nx.number_of_nodes(G)
                               except:
@@ -671,6 +571,10 @@ if selected2=='Query a Single Protein':
                                  c2=nx.number_of_edges(G)
                               except:
                                   c2='Not Determined'
+                              try:
+                                 c_density = nx.density(G)
+                              except:
+                                 c_density = 'Not Determined'
                               try:
                                  G_deg=nx.degree_histogram(G)
                                  G_deg_sum=[a*b for a,b in zip(G_deg,range(0,len(G_deg)))]
@@ -702,41 +606,16 @@ if selected2=='Query a Single Protein':
                                   c8=nx.number_connected_components(G)
                               except:
                                    c8='Not Determined'
-                              list2=[c1,c2,avg_deg,c3,c4,c5,avg_clu,c8]
+                              list2=[c1,c2,c_density,avg_deg,c3,c4,c5,avg_clu,c8]
                               data=pd.DataFrame()
                               data['Statistical Parameters'] = list1
                               data['Values'] = list2
                               st.header('STATISTICS')
                               st.dataframe(data)
-
-
-
-
                            except:
                               st.header('Wrong Input')
-                   
-               
-
-
-
-
-
-
-
-
-
         except:
             st.image('d.png')
-
-
-
-
-
-
-
-
-
-
 
     # TOPOLOGICAL ANALYSIS
     if selected4=='Topological Analysis':
@@ -756,7 +635,6 @@ if selected2=='Query a Single Protein':
                G = nx.from_pandas_edgelist(data1, 'Source', 'Target')
                col1,col2=st.columns(2)
 
-
                with col1:
                    selected8 = option_menu("TOPOLOGICAL ANALYSIS", ['Centrality Analysis','Community Detections','Shortest Path'], 
     icons=['123','123','123'], 
@@ -768,10 +646,6 @@ if selected2=='Query a Single Protein':
         "nav-link-selected": {"background-color": "green"},
     }
 )
-              
-
-
-
 
                with col2:
                  if selected8=="Centrality Analysis":
@@ -816,12 +690,6 @@ if selected2=='Query a Single Protein':
                                data['Values']=de1.values()
                                st.dataframe(data)
 
-
-
-
-
-
-                   
                      if option=='Closeness Centrality':
                          de1 = nx.closeness_centrality(G)
                          selected9 = option_menu(None, ['Top 5 Proteins','View Centrality of all Proteins'], 
@@ -859,14 +727,6 @@ if selected2=='Query a Single Protein':
                                data['Proteins']=de1.keys()
                                data['Values']=de1.values()
                                st.dataframe(data)
-
-
-
-
-
-
-
-
 
                      if option=='Betweenness Centrality':
                          de1 = nx.betweenness_centrality(G)
@@ -920,8 +780,6 @@ if selected2=='Query a Single Protein':
                              da['community '+str(i)]=node_groups[i]
                              st.dataframe(da)
 
-
-
                  if selected8=="Shortest Path":
                          la=G.nodes()
                          lb=G.nodes()
@@ -953,43 +811,9 @@ if selected2=='Query a Single Protein':
                              
                             except:
                                st.subheader('No Path Between '+option1+' and '+option2 )
-                        
-                         
-                     
-
-
-
-
-
-
-
-
-
-
-
         except:
             st.image('d.png')
                
-
-
-
-
-
-                   
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
 # QUERY A MULTIPLE PROTEIN
 if selected2=='Query Multiple Proteins':
     selected = option_menu("PPI NETWORK CONSTRUCTION", ['Query Multiple Proteins'], 
@@ -1019,9 +843,6 @@ if selected2=='Query Multiple Proteins':
         "nav-link-selected": {"background-color": "black"},
     }
 )
-
-
-
 
      # GET PPI DATA
     if selected4=="Get PPI Data":
@@ -1054,14 +875,6 @@ if selected2=='Query Multiple Proteins':
                st.write(p1)
                st.image('d.png')
 
-
-
-
-
-
-
-
-
     # VISUALIZE NETWORK
     if selected4=='Visualize Network':
         try:
@@ -1147,15 +960,6 @@ if selected2=='Query Multiple Proteins':
 )
         except:
            st.image('d.png')
-                         
-        
-  
-
-
-
-
-
-
 
     # STATISTICAL ANALYSIS
     if selected4=='Statistical Analysis':
@@ -1175,11 +979,23 @@ if selected2=='Query Multiple Proteins':
                G = nx.from_pandas_edgelist(data1, 'Source', 'Target')
                col1,col2=st.columns(2)
 
-
-
                with col1:
-                   selected7 = option_menu("STATISTICAL PARAMETERS", ['Number of Nodes','Number of Edges','Average Degree','Average Path Length',"Network Diameter","Network Radius","Average Clustering Coefficient",'Clustering Coefficient of each node',"Connected or Disconnected","Number of Connected Components","Center","View Full Statistics"], 
-    icons=['123','123','123','123','123','123','123','123','123','123','123','123'], 
+                   selected7 = option_menu("STATISTICAL PARAMETERS", [
+                       'Number of Nodes',
+                       'Number of Edges', 
+                       'Network Density',
+                       'Average Degree',
+                       'Average Path Length',
+                       "Network Diameter",
+                       "Network Radius",
+                       "Average Clustering Coefficient",
+                       'Clustering Coefficient of each node',
+                       "Connected or Disconnected",
+                       "Number of Connected Components",
+                       "Center",
+                       "View Full Statistics"
+                   ], 
+    icons=['123','123','123','123','123','123','123','123','123','123','123','123','123'], 
     menu_icon="graph-up", default_index=0, 
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa",'border': '7px solid powderblue'},
@@ -1188,9 +1004,6 @@ if selected2=='Query Multiple Proteins':
         "nav-link-selected": {"background-color": "green"},
     }
 )
-
-
-
 
                with col2:
                    if selected7=="Number of Nodes":
@@ -1201,27 +1014,30 @@ if selected2=='Query Multiple Proteins':
                          c2=nx.number_of_edges(G)
                          str= 'Number of Edges : '+str(c2)
                          st.header(str)
+                   if selected7=="Network Density":
+                        try:
+                            c_density = nx.density(G)
+                            str= 'Network Density : '+str(round(c_density, 4))
+                            st.header(str)
+                            st.caption("Network density measures how connected the network is. It ranges from 0 (no connections) to 1 (fully connected).")
+                        except:
+                            st.header('Network Density cannot be calculated')
                    if selected7=="Average Degree":
                          try: 
                             G_deg=nx.degree_histogram(G)
                             G_deg_sum=[a*b for a,b in zip(G_deg,range(0,len(G_deg)))]
                             avg_deg=sum(G_deg_sum)/nx.number_of_nodes(G)
-                            str='Average Degree : '+str(avg_deg)
+                            str='Average Degree : '+str(round(avg_deg, 4))
                             st.header(str)
-
-
-
                          except:
                              st.header('Average Degree cannot be found')
-
                    if selected7=="Average Path Length":
                          try:
                              c3=nx.average_shortest_path_length(G)
-                             str='Average Path Length : '+str(c3) 
+                             str='Average Path Length : '+str(round(c3, 4)) 
                              st.header(str)
                          except:
                               st.header('Average Path Length cannot be found')
-
                    if selected7=="Network Diameter":
                            try:
                               c4=nx.diameter(G)
@@ -1240,7 +1056,7 @@ if selected2=='Query Multiple Proteins':
                            try:
                               G_cluster = sorted(list(nx.clustering(G).values()))
                               avg_clu=sum(G_cluster)/len(G_cluster)
-                              str='Average Clustering Coefficient : '+str(avg_clu) 
+                              str='Average Clustering Coefficient : '+str(round(avg_clu, 4)) 
                               st.header(str)
                            except:
                               st.header('Average Clustering Coefficient cannot be found')
@@ -1258,7 +1074,7 @@ if selected2=='Query Multiple Proteins':
                    if selected7=="Connected or Disconnected":
                            try:
                               c7=nx.is_connected(G)
-                              if c7=='True':
+                              if c7:
                                   s='Connected'
                               else:
                                   s='Disconnected'
@@ -1280,10 +1096,9 @@ if selected2=='Query Multiple Proteins':
                               st.header(str)
                            except:
                               st.header('Center cannot be found')
-
                    if selected7=="View Full Statistics":
                            try:
-                              list1=['Number of Nodes','Number of Edges','Average Degree','Average Path Length',"Network Diameter","Network Radius","Average Clustering Coefficient","Number of Connected Components"]
+                              list1=['Number of Nodes','Number of Edges','Network Density','Average Degree','Average Path Length',"Network Diameter","Network Radius","Average Clustering Coefficient","Number of Connected Components"]
                               try:
                                 c1=nx.number_of_nodes(G)
                               except:
@@ -1292,6 +1107,10 @@ if selected2=='Query Multiple Proteins':
                                  c2=nx.number_of_edges(G)
                               except:
                                   c2='Not Determined'
+                              try:
+                                 c_density = nx.density(G)
+                              except:
+                                 c_density = 'Not Determined'
                               try:
                                  G_deg=nx.degree_histogram(G)
                                  G_deg_sum=[a*b for a,b in zip(G_deg,range(0,len(G_deg)))]
@@ -1323,41 +1142,16 @@ if selected2=='Query Multiple Proteins':
                                   c8=nx.number_connected_components(G)
                               except:
                                    c8='Not Determined'
-                              list2=[c1,c2,avg_deg,c3,c4,c5,avg_clu,c8]
+                              list2=[c1,c2,c_density,avg_deg,c3,c4,c5,avg_clu,c8]
                               data=pd.DataFrame()
                               data['Statistical Parameters'] = list1
                               data['Values'] = list2
                               st.header('STATISTICS')
                               st.dataframe(data)
-
-
-
-
                            except:
                               st.header('Wrong Input')
-                   
-               
-
-
-
-
-
-
-
-
-
         except:
             st.image('d.png')
-
-
-
-
-
-
-
-
-
-
 
     # TOPOLOGICAL ANALYSIS
     if selected4=='Topological Analysis':
@@ -1377,7 +1171,6 @@ if selected2=='Query Multiple Proteins':
                G = nx.from_pandas_edgelist(data1, 'Source', 'Target')
                col1,col2=st.columns(2)
 
-
                with col1:
                    selected8 = option_menu("TOPOLOGICAL ANALYSIS", ['Centrality Analysis','Community Detections','Shortest Path'], 
     icons=['123','123','123'], 
@@ -1389,10 +1182,6 @@ if selected2=='Query Multiple Proteins':
         "nav-link-selected": {"background-color": "green"},
     }
 )
-              
-
-
-
 
                with col2:
                  if selected8=="Centrality Analysis":
@@ -1437,12 +1226,6 @@ if selected2=='Query Multiple Proteins':
                                data['Values']=de1.values()
                                st.dataframe(data)
 
-
-
-
-
-
-                   
                      if option=='Closeness Centrality':
                          de1 = nx.closeness_centrality(G)
                          selected9 = option_menu(None, ['Top 5 Proteins','View Centrality of all Proteins'], 
@@ -1480,14 +1263,6 @@ if selected2=='Query Multiple Proteins':
                                data['Proteins']=de1.keys()
                                data['Values']=de1.values()
                                st.dataframe(data)
-
-
-
-
-
-
-
-
 
                      if option=='Betweenness Centrality':
                          de1 = nx.betweenness_centrality(G)
@@ -1541,8 +1316,6 @@ if selected2=='Query Multiple Proteins':
                              da['community '+str(i)]=node_groups[i]
                              st.dataframe(da)
 
-
-
                  if selected8=="Shortest Path":
                          la=G.nodes()
                          lb=G.nodes()
@@ -1574,78 +1347,8 @@ if selected2=='Query Multiple Proteins':
                              
                             except:
                                st.subheader('No Path Between '+option1+' and '+option2 )
-                        
-                         
-                     
-
-
-
-
-
-
-
-
-
-
-
         except:
             st.image('d.png')
-               
-
-
-
-
-
-                   
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # UPLOAD PROTEIN
 if selected2=='Upload Edge List of Protein Interactions':
@@ -1687,7 +1390,6 @@ if selected2=='Upload Edge List of Protein Interactions':
          except:
             st.image('d.png')
      
-
      if selected4=="Visualize Network":
           r='T'
           if uploaded_file is None:
@@ -1768,13 +1470,7 @@ if selected2=='Upload Edge List of Protein Interactions':
     }
 )
 
-
-
-
-
-   
      # STATISTICAL ANALYSIS
-
      if selected4=="Statistical Analysis":
           r='T'
           if uploaded_file is None:
@@ -1791,11 +1487,22 @@ if selected2=='Upload Edge List of Protein Interactions':
                 G = nx.from_pandas_edgelist(dataframe, 'Source', 'Target')
                 col1,col2=st.columns(2)
 
-
-
                 with col1:
-                   selected7 = option_menu("STATISTICAL PARAMETERS", ['Number of Nodes','Number of Edges','Average Degree','Average Path Length',"Network Diameter","Network Radius","Average Clustering Coefficient",'Clustering Coefficient of each node',"Connected or Disconnected","Number of Connected Components","Center"], 
-    icons=['123','123','123','123','123','123','123','123','123','123','123'], 
+                   selected7 = option_menu("STATISTICAL PARAMETERS", [
+                       'Number of Nodes',
+                       'Number of Edges', 
+                       'Network Density',
+                       'Average Degree',
+                       'Average Path Length',
+                       "Network Diameter",
+                       "Network Radius",
+                       "Average Clustering Coefficient",
+                       'Clustering Coefficient of each node',
+                       "Connected or Disconnected",
+                       "Number of Connected Components",
+                       "Center"
+                   ], 
+    icons=['123','123','123','123','123','123','123','123','123','123','123','123'], 
     menu_icon="graph-up", default_index=0, 
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa",'border': '7px solid powderblue'},
@@ -1804,9 +1511,6 @@ if selected2=='Upload Edge List of Protein Interactions':
         "nav-link-selected": {"background-color": "green"},
     }
 )
-
-
-
 
                 with col2:
                    if selected7=="Number of Nodes":
@@ -1817,27 +1521,30 @@ if selected2=='Upload Edge List of Protein Interactions':
                          c2=nx.number_of_edges(G)
                          str= 'Number of Edges : '+str(c2)
                          st.header(str)
+                   if selected7=="Network Density":
+                        try:
+                            c_density = nx.density(G)
+                            str= 'Network Density : '+str(round(c_density, 4))
+                            st.header(str)
+                            st.caption("Network density measures how connected the network is. It ranges from 0 (no connections) to 1 (fully connected).")
+                        except:
+                            st.header('Network Density cannot be calculated')
                    if selected7=="Average Degree":
                          try: 
                             G_deg=nx.degree_histogram(G)
                             G_deg_sum=[a*b for a,b in zip(G_deg,range(0,len(G_deg)))]
                             avg_deg=sum(G_deg_sum)/nx.number_of_nodes(G)
-                            str='Average Degree : '+str(avg_deg)
+                            str='Average Degree : '+str(round(avg_deg, 4))
                             st.header(str)
-
-
-
                          except:
                              st.header('Average Degree cannot be found')
-
                    if selected7=="Average Path Length":
                          try:
                              c3=nx.average_shortest_path_length(G)
-                             str='Average Path Length : '+str(c3) 
+                             str='Average Path Length : '+str(round(c3, 4)) 
                              st.header(str)
                          except:
                               st.header('Average Path Length cannot be found')
-
                    if selected7=="Network Diameter":
                            try:
                               c4=nx.diameter(G)
@@ -1856,7 +1563,7 @@ if selected2=='Upload Edge List of Protein Interactions':
                            try:
                               G_cluster = sorted(list(nx.clustering(G).values()))
                               avg_clu=sum(G_cluster)/len(G_cluster)
-                              str='Average Clustering Coefficient : '+str(avg_clu) 
+                              str='Average Clustering Coefficient : '+str(round(avg_clu, 4)) 
                               st.header(str)
                            except:
                               st.header('Average Clustering Coefficient cannot be found')
@@ -1874,7 +1581,7 @@ if selected2=='Upload Edge List of Protein Interactions':
                    if selected7=="Connected or Disconnected":
                            try:
                               c7=nx.is_connected(G)
-                              if c7=='True':
+                              if c7:
                                   s='Connected'
                               else:
                                   s='Disconnected'
@@ -1897,7 +1604,6 @@ if selected2=='Upload Edge List of Protein Interactions':
                            except:
                               st.header('Center cannot be found')
 
-
     # TOPOLOGICAL ANALYSIS
      if selected4=="Topological Analysis":
           r='T'
@@ -1915,7 +1621,6 @@ if selected2=='Upload Edge List of Protein Interactions':
                 G = nx.from_pandas_edgelist(dataframe, 'Source', 'Target')
                 col1,col2=st.columns(2)
 
-
                 with col1:
                    selected8 = option_menu("TOPOLOGICAL ANALYSIS", ['Centrality Analysis','Community Detections','Shortest Path'], 
     icons=['123','123','123'], 
@@ -1927,10 +1632,6 @@ if selected2=='Upload Edge List of Protein Interactions':
         "nav-link-selected": {"background-color": "green"},
     }
 )
-              
-
-
-
 
                 with col2:
                  if selected8=="Centrality Analysis":
@@ -1975,12 +1676,6 @@ if selected2=='Upload Edge List of Protein Interactions':
                                data['Values']=de1.values()
                                st.dataframe(data)
 
-
-
-
-
-
-                   
                      if option=='Closeness Centrality':
                          de1 = nx.closeness_centrality(G)
                          selected9 = option_menu(None, ['Top 5 Proteins','View Centrality of all Proteins'], 
@@ -2018,14 +1713,6 @@ if selected2=='Upload Edge List of Protein Interactions':
                                data['Proteins']=de1.keys()
                                data['Values']=de1.values()
                                st.dataframe(data)
-
-
-
-
-
-
-
-
 
                      if option=='Betweenness Centrality':
                          de1 = nx.betweenness_centrality(G)
@@ -2079,8 +1766,6 @@ if selected2=='Upload Edge List of Protein Interactions':
                              da['community '+str(i)]=node_groups[i]
                              st.dataframe(da)
 
-
-
                  if selected8=="Shortest Path":
                          la=G.nodes()
                          lb=G.nodes()
@@ -2112,7 +1797,6 @@ if selected2=='Upload Edge List of Protein Interactions':
                              
                             except:
                                st.subheader('No Path Between '+option1+' and '+option2 )
-                        
 
 if selected1=='NCBI Organism ID Finder':
     list1=['None','Homo sapiens',
@@ -2507,8 +2191,6 @@ if selected1=='NCBI Organism ID Finder':
     data_list = []
     lineage_list = []
 
-
-
     for species in option3:
              print ('\t'+species) # progress messages
 
@@ -2523,24 +2205,6 @@ if selected1=='NCBI Organism ID Finder':
             st.title('NCBI ID of')
             for i in range(len(taxid_list)):
                 st.write(option3[i]+':'+str(taxid_list[i]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 if selected1=='Tutorial':
     selected4 = option_menu('Tutorial', ["PPI Tutorial", "User Guide", 
@@ -2696,30 +2360,4 @@ data = [l.split('\t') for l in lines] # split each line into its components base
 df = pd.DataFrame(data[1:-1], columns = data[0]) 
 # dataframe with the preferred names of the two proteins and the score of the interaction
 interactions = df[['preferredName_A', 'preferredName_B', 'score']]'''
-        st.code(code, language='python')  
-
-
-         
-
-
-
-  
-
-     
-    
-  
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-
+        st.code(code, language='python')
